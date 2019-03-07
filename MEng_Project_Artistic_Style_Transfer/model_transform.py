@@ -10,11 +10,11 @@ slim = tf.contrib.slim
 
 
 def transform( input_,
-				normalizer_fn = None,
-				normalizer_params = None,
-				reuse = False,
-				trainable = True,
-				is_training = True
+		normalizer_fn = None,
+		normalizer_params = None,
+		reuse = False,
+		trainable = True,
+		is_training = True
 				):
 
 	with tf.variable_scope('transformer', reuse = reuse):
