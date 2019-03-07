@@ -120,8 +120,7 @@ def style_transfer(style_images_paths,
 
 				if style_i % 10 == 0:
 					tf.logging.info('Stylizing (%d) %s with (%d) %s' %
-													(content_i, content_img_name, style_i,
-													 style_img_name))
+					(content_i, content_img_name, style_i, style_img_name))
 
 				# Saves preprocessed style image.
 				style_img_croped_resized_np = sess.run(
@@ -142,10 +141,10 @@ def style_transfer(style_images_paths,
 					stylized_image_res = sess.run(
 							stylized_images,
 							feed_dict={
-									bottleneck_feat:
-											identity_params * (1 - wi) + style_params * wi,
-									content_img_ph:
-											content_img_np
+								bottleneck_feat:
+										identity_params * (1 - wi) + style_params * wi,
+								content_img_ph:
+										content_img_np
 							})
 
 					# Saves stylized image.
@@ -153,7 +152,7 @@ def style_transfer(style_images_paths,
 				image_utils.save_np_image(
 							stylized_image_res,
 							os.path.join(output_dir, '%s_stylized_%d.jpg' %
-													 (content_img_name,interp_i)))
+							 (content_img_name,interp_i)))
 					
 
 
