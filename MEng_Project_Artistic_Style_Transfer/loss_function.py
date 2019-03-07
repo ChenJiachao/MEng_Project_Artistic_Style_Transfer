@@ -84,21 +84,21 @@ def total_loss(	content_inputs,
 
 	with tf.name_scope('content_loss'):
 		total_cotent_loss, content_loss_dict = content_loss(	content_end_points,
-																stylized_end_points,
-																content_weights
+									stylized_end_points,
+									content_weights
 																)
 	# compute the style loss
 
 	with tf.name_scope('style_loss'):
 		total_style_loss, style_loss_dict = content_loss(	style_end_points,
-																stylized_end_points,
-																style_weights
+									stylized_end_points,
+									style_weights
 																)
 	# Compute the total variation loss
 	with tf.name_scope('total_variation_loss'):
 		tv_loss, total_variation_loss_dict = learning_utils.total_variation_loss(
-																	stylized_inputs,
-																	total_variation_weight)
+									stylized_inputs,
+									total_variation_weight)
 	# compute the total loss
 
 	with tf.name_scope('total_loss'):
