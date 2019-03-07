@@ -14,16 +14,16 @@ slim = tf.contrib.slim
 
 
 def conditional_instance_norm( inputs,
-								labels,
-								num_categories, # Total number of styles be modeled
-								center = True,	# If true, substract beta
-								scale = True,	# If true, add gamma
-								activation_fn = None,
-								reuse = None,
-								variables_collections = None, 
-								outputs_collections = None,	# Collection to add outputs
-								trainable = True,
-								scope = None):	# Collections: because disconnected parts of 
+				labels,
+				num_categories, # Total number of styles be modeled
+				center = True,	# If true, substract beta
+				scale = True,	# If true, add gamma
+				activation_fn = None,
+				reuse = None,
+				variables_collections = None, 
+				outputs_collections = None,	# Collection to add outputs
+				trainable = True,
+				scope = None):	# Collections: because disconnected parts of 
 												# a TensorFlow program might want to create 
 												# variables, it is sometimes useful to have 
 												# a single way to access all of them. 
@@ -32,9 +32,9 @@ def conditional_instance_norm( inputs,
 												# tensors or other objects, 
 												#such as tf.Variable instances.
 	with tf.variable_scope( scope,
-							'InstanceNorm',
-							[inputs],
-							reuse = reuse) as sc:
+				'InstanceNorm',
+				[inputs],
+				reuse = reuse) as sc:
 		# The tensorflow part will begin with the " with tf.variable_scope()"
 		# First, we need to convert our inputs to tensors
 		# Second, we get its shape
@@ -64,10 +64,10 @@ def conditional_instance_norm( inputs,
 
 		#This function will get gamma and beta
 		def _label_conditioned_variable(
-										name,
-										initializer,
-										labels,
-										num_categories
+						name,
+						initializer,
+						Labels,
+						num_categories
 										):
 
 			# Don't know why do we need to concatenate 
@@ -81,11 +81,11 @@ def conditional_instance_norm( inputs,
 
 			# The way how does slim work, to shrink the size of the code
 			var = slim.model_variable(	name,
-										shape = shape,
-										dtype = dtype,
-										initializer = initializer,
-										collections = var_collections,
-										trainable = trainable)
+							shape = shape,
+							dtype = dtype,
+							initializer = initializer,
+							collections = var_collections,
+							trainable = trainable)
 			# tf.gather will select the variables from the given indices
 			conditioned_var = tf.gather(var, labels)
 			
@@ -109,17 +109,17 @@ def conditional_instance_norm( inputs,
 		# normalization, center = True -> substract the beta
 		if center: 
 			beta = _label_conditioned_variable(	'beta',
-												tf.zeros_initializer(),
-												labels,
-												num_categories)
+								tf.zeros_initializer(),
+								labels,
+								num_categories)
 		
 
 		# Same explaination to center
 		if scale:
 			gamma = _label_conditioned_variable( 	'gamma',
-													tf.ones_initializer(),
-													labels,
-													num_categories)
+								tf.ones_initializer(),
+								labels,
+								num_categories)
 		
 
 		# The inputs will be [batch, height, width, channels]
@@ -135,11 +135,11 @@ def conditional_instance_norm( inputs,
 		variance_epsilon = 1E-5
 
 		outputs = tf.nn.batch_normalization( 	inputs,
-												mean,
-												variance,
-												beta,
-												gamma,
-												variance_epsilon)
+							mean,
+							variance,
+							beta,
+							gamma,
+							variance_epsilon)
 		# Again, no idea what it is
 		outputs.set_shape(inputs_shape)
 
@@ -147,26 +147,26 @@ def conditional_instance_norm( inputs,
 			outputs = activation_fn(outputs)
 
 		return slim.utils.collect_named_outputs(outputs_collections,
-												sc.original_name_scope,
-												outputs)
+							sc.original_name_scope,
+							outputs)
 
 
 
 @slim.add_arg_scope
 
-def conditional_style_norm(inputs,
-							style_params = None,
-							activation_fn =None,
-							reuse = None,
-							outputs_collections = None,
-							check_numerics = True,
-							scope = None
+def conditional_style_norm(	inputs,
+				style_params = None,
+				activation_fn =None,
+				reuse = None,
+				outputs_collections = None,
+				check_numerics = True,
+				scope = None
 							):
 	# All the way it should go
 	with variable_scope.variable_scope( scope,
-										'StyleNorm',
-										[inputs],
-										reuse = reuse
+					'StyleNorm',
+					[inputs],
+					reuse = reuse
 										) as sc:
 		
 		inputs = framework_ops.convert_to_tensor(inputs)
@@ -205,21 +205,21 @@ def conditional_style_norm(inputs,
 
 		# Calculates the moments on the last axis (instance activations).
 		mean, variance = tf.nn.moments(	
-									inputs, 
-									axis, 
-									keep_dims=True
+						inputs, 
+						axis, 
+						keep_dims=True
 									)
 
 		# Compute layer normalization using the batch_normalization function.
 		variance_epsilon = 1E-5
 		outputs = tf.nn.batch_normalization(
-										inputs, 
-										mean, 
-										variance,
-										beta, 
-										gamma,
-										variance_epsilon
-										)
+							inputs, 
+							mean, 
+							variance,
+							beta, 
+							gamma,
+							variance_epsilon
+								)
 		# set_shape like reshape, but it only update the shape information not change them
 		# which means it cannot directly change the shape
 		outputs.set_shape(inputs_shape)
@@ -230,7 +230,7 @@ def conditional_style_norm(inputs,
 		# It will change the name of the variable
 		# and return to the collection
 		return slim.utils.collect_named_outputs(
-											outputs_collections,
-											sc.original_name_scope, 
-											outputs
+							outputs_collections,
+							sc.original_name_scope, 
+							outputs
 											)
