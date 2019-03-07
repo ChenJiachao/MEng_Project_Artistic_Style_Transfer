@@ -25,21 +25,21 @@ def transform( input_,
 		# this is for the convolution 2 D with batch normalization
 
 		with slim.arg_scope(	
-								[slim.conv2d],
-								activation_fn = tf.nn.relu,
-								normalizer_fn = normalizer_fn,
-								normalizer_params = normalizer_params,
-								weights_initializer=tf.random_normal_initializer(0.0, 0.01),
-								biases_initializer=tf.constant_initializer(0.0),
-								trainable=trainable
+					[slim.conv2d],
+					activation_fn = tf.nn.relu,
+					normalizer_fn = normalizer_fn,
+					normalizer_params = normalizer_params,
+					weights_initializer=tf.random_normal_initializer(0.0, 0.01),
+					biases_initializer=tf.constant_initializer(0.0),
+					trainable=trainable
 								):
 			with slim.arg_scope([slim.conv2d], normalizer_fn=slim.batch_norm,
                           normalizer_params=None,
                           trainable=trainable):
 				with slim.arg_scope( 	
-									[slim.batch_norm],
-									is_training = is_training,
-									trainable = trainable
+							[slim.batch_norm],
+							is_training = is_training,
+							trainable = trainable
 									):
 
 				# I still think it is for convolution 
