@@ -33,11 +33,11 @@ def transform(
 	with tf.variable_scope('transformer', reuse = reuse):
 		
 		with slim.arg_scope( [slim.conv2d],
-								activation_fn = tf.nn.relu,
-								normalizer_fn = normalizer_fn,
-								normalizer_params = normalizer_params,
-								weights_initializer = tf.random_normal_initializer(0.0, 0.01),
-								biases_initializer = tf.constant_initializer(0.0)
+				activation_fn = tf.nn.relu,
+				normalizer_fn = normalizer_fn,
+				normalizer_params = normalizer_params,
+				weights_initializer = tf.random_normal_initializer(0.0, 0.01),
+				biases_initializer = tf.constant_initializer(0.0)
 									):
 			
 
@@ -99,8 +99,8 @@ def conv2d( input_,
 	'''
 
 	padded_input = tf.pad(	input_,					
-							[[0,0], [padding,padding], [padding,padding], [0,0]],
-							mode = "REFLECT"
+				[[0,0], [padding,padding], [padding,padding], [0,0]],
+				mode = "REFLECT"
 							)
 	return slim.conv2d(
 	  padded_input,
@@ -113,12 +113,12 @@ def conv2d( input_,
 
 
 # 
-def upsampling (	input_,
-					kernel_size,
-					stride,
-					num_outputs,
-					scope,
-					activation_fn = tf.nn.relu
+def upsampling (input_,
+		kernel_size,
+		stride,
+		num_outputs,
+		scope,
+		activation_fn = tf.nn.relu
 					):
 
 	
@@ -132,23 +132,24 @@ def upsampling (	input_,
 		width = shape [2]
 
 		# This is the way to upsampling
-		upsampled_input = tf.image.resize_nearest_neighbor( input_,
-														[stride * height,
-														stride * width ]
-															)
+		upsampled_input = tf.image.resize_nearest_neighbor( 
+								input_,
+								[stride * height,
+								stride * width ]
+								)
 
 		return conv2d(	upsampled_input,
-						kernel_size,
-						1,
-						num_outputs,
-						'conv',
-						activation_fn = activation_fn
+				kernel_size,
+				1,
+				num_outputs,
+				'conv',
+				activation_fn = activation_fn
 						)
 
 def residual_block(	input_,
-					kernel_size,
-					scope,
-					activation_fn = tf.nn.relu):
+			kernel_size,
+			scope,
+			activation_fn = tf.nn.relu):
 	
 	if kernel_size % 2 == 0:
 		raise ValueError('kernel_size is expected to be odd.')
