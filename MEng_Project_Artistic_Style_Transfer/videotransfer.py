@@ -42,15 +42,15 @@ style_square_crop = False
 interpolation = '[0.8]'
 
 style_transfer(		style_images_paths,
-					content_images_paths,
-					checkpoints_path,
-					output_dir,
-					image_size,
-					style_image_size,
-					maximum_styles_to_evaluate,
-					content_square_crop,
-					style_square_crop,
-					interpolation)
+			content_images_paths,
+			checkpoints_path,
+			output_dir,
+			image_size,
+			style_image_size,
+			maximum_styles_to_evaluate,
+			content_square_crop,
+			style_square_crop,
+			interpolation)
 
 
 base_dir = os.path.realpath("output/me2/style7/")
